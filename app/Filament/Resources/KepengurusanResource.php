@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\SejarahResource\Pages;
-use App\Filament\Resources\SejarahResource\RelationManagers;
-use App\Models\Sejarah;
+use App\Filament\Resources\KepengurusanResource\Pages;
+use App\Filament\Resources\KepengurusanResource\RelationManagers;
+use App\Models\Kepengurusan;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,19 +13,21 @@ use Filament\Tables\Table;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\MarkdownEditor;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
+use Filament\Tables\Columns\ImageColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class SejarahResource extends Resource
+class KepengurusanResource extends Resource
 {
-    protected static ?string $model = Sejarah::class;
+    protected static ?string $model = Kepengurusan::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?string $navigationGroup = 'Profile';
 
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 2;
 
     public static function form(Form $form): Form
     {
@@ -34,12 +36,22 @@ class SejarahResource extends Resource
             Section::make([
                 Grid::make()
                     ->schema([
+                        TextInput::make('Tahun')
+                            ->required()
+                            ->maxLength(255),
                         TextInput::make('judul')
                             ->required()
                             ->maxLength(255),
                         MarkdownEditor::make('deskripsi')
                             ->columnSpanFull()
-                            ->fileAttachmentsDirectory('sejarah'),
+                            ->fileAttachmentsDirectory('kepengurusan'),
+                        FileUpload::make('gambar')
+                            ->label('Gambar')
+                            ->directory('manajemen')
+                            ->image()
+                            ->required()
+                            ->rules('required'),
+
                     ])
             ])
         ]);
@@ -49,10 +61,17 @@ class SejarahResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('tahun')
+                    ->numeric()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('judul')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('deskripsi')
                     ->searchable(),
+                ImageColumn::make('gambar')
+                    ->label('Gambar')
+                    ->width(100)
+                    ->height(100),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -66,11 +85,7 @@ class SejarahResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\ActionGroup::make([
-                    Tables\Actions\ViewAction::make(),
-                    Tables\Actions\EditAction::make(),
-                    Tables\Actions\DeleteAction::make()
-                ])
+                Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -89,9 +104,9 @@ class SejarahResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListSejarahs::route('/'),
-            'create' => Pages\CreateSejarah::route('/create'),
-            'edit' => Pages\EditSejarah::route('/{record}/edit'),
+            'index' => Pages\ListKepengurusans::route('/'),
+            'create' => Pages\CreateKepengurusan::route('/create'),
+            'edit' => Pages\EditKepengurusan::route('/{record}/edit'),
         ];
     }
 }
