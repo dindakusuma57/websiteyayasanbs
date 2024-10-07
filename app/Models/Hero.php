@@ -9,5 +9,5 @@ class Hero extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['judul', 'deskripsi'];
+    protected $fillable = ['judul', 'deskripsi','gambar'];
 }

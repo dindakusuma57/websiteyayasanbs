@@ -11,8 +11,9 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Forms\Components\Section;
-use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\FileUpload;
+use Filament\Tables\Columns\ImageColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
@@ -22,28 +23,27 @@ class HeroResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $navigationGroup = 'Hero';
-
-    protected static ?int $navigationSort = 1;
-
-
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Section::make([
-                    Grid::make()
-                        ->schema([
-                            TextInput::make('judul')
-                                ->required()
-                                ->maxLength(255),
+                Section::make('Hero Information')->schema([
 
-                            TextInput::make('deskripsi')
-                                ->required()
-                                ->maxLength(255),
+                    TextInput::make('judul')
+                            ->required()
+                            ->maxLength(255),
 
-                        ])
-                ])
+                    TextInput::make('deskripsi')
+                        ->required()
+                        ->maxLength(255),
+
+                    FileUpload::make('gambar')
+                        ->label('Gambar')
+                        ->directory('hero')
+                        ->image()
+                        ->required()
+                        ->rules('required')
+            ])
             ]);
     }
 
@@ -55,6 +55,10 @@ class HeroResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('deskripsi')
                     ->searchable(),
+                ImageColumn::make('gambar')
+                    ->label('Gambar')
+                    ->width(100)
+                    ->height(100),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

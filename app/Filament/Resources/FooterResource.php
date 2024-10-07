@@ -28,28 +28,30 @@ class FooterResource extends Resource
     {
         return $form
             ->schema([
-                Section::make([
-                    Grid::make()
-                        ->schema([
-                            TextInput::make('deskripsi')
+                    Section::make('Footer Information')->schema([
+
+                        TextInput::make('deskripsi')
                                 ->required()
                                 ->maxLength(255),
 
-                            TextInput::make('alamat')
-                                ->required()
-                                ->maxLength(255),
+                        TextInput::make('alamat')
+                            ->required()
+                            ->maxLength(255),
 
-                            TextInput::make('kontak')
-                                ->required()
-                                ->maxLength(255),
-                        ]),
+                        TextInput::make('kontak')
+                            ->label('Nomor Telepon')
+                            ->required()
+                            ->tel()
+                            ->maxLength(15)
+                            ->placeholder('+628123456789')
+                            ->rule('regex:/^[0-9+]+$/'),
 
                         FileUpload::make('gambar')
-                                    ->label('Gambar')
-                                    ->directory('footer')
-                                    ->image()
-                                    ->required()
-                                    ->rules('required'),
+                            ->label('Gambar')
+                            ->directory('footer')
+                            ->image()
+                            ->required()
+                            ->rules('required'),
                 ])
             ]);
     }
@@ -58,7 +60,6 @@ class FooterResource extends Resource
     {
         return $table
             ->columns([
-
                 Tables\Columns\TextColumn::make('deskripsi')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('alamat')
