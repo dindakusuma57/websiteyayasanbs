@@ -20,7 +20,7 @@ class UnitsekolahResource extends Resource
 {
     protected static ?string $model = Unitsekolah::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
 
     public static function form(Form $form): Form
     {

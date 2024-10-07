@@ -20,7 +20,7 @@ class PpdbResource extends Resource
 {
     protected static ?string $model = Ppdb::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-document-text';
+    protected static ?string $navigationIcon = 'heroicon-o-window';
 
     protected static ?string $navigationGroup = 'PPDB';
 

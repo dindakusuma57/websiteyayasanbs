@@ -23,7 +23,7 @@ class VisimisiResource extends Resource
 {
     protected static ?string $model = Visimisi::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-bars-2';
 
     protected static ?string $navigationGroup = 'Profile';
 
