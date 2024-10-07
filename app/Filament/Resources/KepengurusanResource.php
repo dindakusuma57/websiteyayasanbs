@@ -36,9 +36,14 @@ class KepengurusanResource extends Resource
             Section::make([
                 Grid::make()
                     ->schema([
-                        TextInput::make('Tahun')
+                        TextInput::make('tahun')
+                            ->label('Tahun')
                             ->required()
-                            ->maxLength(255),
+                            ->numeric()
+                            ->minValue(1900)
+                            ->maxValue(date('Y'))
+                            ->maxLength(4),
+
                         TextInput::make('judul')
                             ->required()
                             ->maxLength(255),
@@ -85,7 +90,11 @@ class KepengurusanResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\ViewAction::make(),
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\DeleteAction::make()
+                ])
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
